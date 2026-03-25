@@ -41,7 +41,7 @@ const Navbar = () => {
             return <li key={item.label} className='cursor-pointer'>{item.label}</li>
         })}
       </ul>
-      <div>
+      <div className='hidden md:block'>
         <CustomButton title='GET' />
       </div>
     </div>

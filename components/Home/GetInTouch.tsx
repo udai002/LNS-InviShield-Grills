@@ -8,8 +8,8 @@ const contactItems = [
       </svg>
     ),
     label: "Phone",
-    value: "+91 98400 12345",
-    href: "tel:+919840012345",
+    value: "+91 8144725876",
+    href: "tel:+9181447258765",
     bg: "bg-amber-50",
     iconColor: "text-amber-600",
     hoverBorder: "hover:border-amber-300",
@@ -22,8 +22,8 @@ const contactItems = [
       </svg>
     ),
     label: "WhatsApp",
-    value: "+91 98400 12345",
-    href: "https://wa.me/919840012345",
+    value: "+91 8144725876",
+    href: "https://wa.me/918144725876",
     bg: "bg-emerald-50",
     iconColor: "text-emerald-600",
     hoverBorder: "hover:border-emerald-300",
