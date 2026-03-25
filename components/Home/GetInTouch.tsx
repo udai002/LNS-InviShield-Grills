@@ -194,7 +194,7 @@ const ContactSection = () => {
                     <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
                       Phone Number <span className="text-amber-500">*</span>
                     </label>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       <div className={`flex items-center px-3 rounded-xl border text-sm text-gray-500 transition-all duration-200 ${
                         focused === "phone" ? "border-amber-400 ring-2 ring-amber-100" : "border-gray-200"
                       }`}>

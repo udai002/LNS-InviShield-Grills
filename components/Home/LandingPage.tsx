@@ -74,9 +74,9 @@ const LandingPage = () => {
     <>
     <div className='grid grid-cols-1 lg:grid-cols-2 p-6 sm:p-8 lg:p-12 gap-8'>
       <div className='order-2 lg:order-1 p-4 sm:p-6 lg:p-10 flex flex-col justify-center gap-5'>
-        <div className='bg-gray-200 p-4 w-full sm:w-3/4 lg:w-1/2 rounded-2xl text-center'>
-          <p className='whitespace-nowrap text-sm sm:text-base'>India's Trusted Grill Fabricators since year</p>
-        </div>
+        
+          <p className='self-start bg-gray-200 p-4 rounded-2xl text-center whitespace-nowrap text-sm sm:text-base'>India's Trusted Grill Fabricators since year</p>
+        
 
         <div className=''>
           <p className='font-extrabold text-3xl sm:text-4xl lg:text-5xl text-black '>Safe & Strong
