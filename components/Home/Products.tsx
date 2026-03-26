@@ -6,56 +6,51 @@ interface IProductList{
     id:string ;
     label:string;
     description:string ,
-    price:string;
     tag:string
 }
 
 const productList: IProductList[] = [
     {
         id: '1',
-        imageUrl: '/grills/griil1.webp',
+        imageUrl: 'https://static.wixstatic.com/media/fe6a93_6c5ff418be2840b4b09651deb56756d8~mv2.jpg',
         title: 'Balcony Grill',
         label: 'Safety',
         description: 'Modern MS grill for balconies with anti-rust coating',
-        price: '₹5,999',
         tag: 'Popular'
     },
     {
         id: '2',
-        imageUrl: '/grills/griil2.webp',
+        imageUrl: 'https://static.wixstatic.com/media/af53f8_836c493f935d49698eb72b3387e955bc~mv2.png/v1/fill/w_693,h_1086,al_tl,q_95,enc_avif,quality_auto/af53f8_836c493f935d49698eb72b3387e955bc~mv2.png',
         title: 'Window Grill',
         label: 'Security',
         description: 'Stainless steel grill designed for window safety',
-        price: '₹3,499',
         tag: 'Best Seller'
     },
     {
         id: '3',
-        imageUrl: '/grills/grill3.webp',
+        imageUrl: 'https://static.wixstatic.com/media/af53f8_cd568495fcae45bc96980d7034fe79c9~mv2.png/v1/fill/w_1886,h_894,al_c,q_95,enc_avif,quality_auto/af53f8_cd568495fcae45bc96980d7034fe79c9~mv2.png',
         title: 'Door Grill',
         label: 'Protection',
         description: 'Heavy-duty iron grill for main doors',
-        price: '₹7,999',
         tag: 'Premium'
     },
     {
         id: '4',
-        imageUrl: '/grills/grill3.webp',
+        imageUrl: 'https://static.wixstatic.com/media/af53f8_93c6edab84054025b5311b87b40bcc15~mv2.png/v1/fill/w_1886,h_894,al_c,q_95,enc_avif,quality_auto/af53f8_93c6edab84054025b5311b87b40bcc15~mv2.png',
         title: 'Staircase Grill',
         label: 'Safety',
         description: 'Elegant grill system for staircase railings',
-        price: '₹4,499',
         tag: 'New'
     }
 ]
 
 
 
-const ProductItemCard = ({ imageUrl, title, tag, description, price, label }: IProductList) => {
+const ProductItemCard = ({ imageUrl, title, tag, description, label }: IProductList) => {
     return (
         <div className='bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow'>
             {/* Image */}
-            <div className='w-full h-48 overflow-hidden bg-[#F7F7F5] p-10'>
+            <div className='w-full h-48 overflow-hidden bg-[#F7F7F5] '>
             <img 
                 src={imageUrl} 
                 alt={title}
@@ -84,7 +79,6 @@ const ProductItemCard = ({ imageUrl, title, tag, description, price, label }: IP
 
             {/* Price */}
             <div className='flex flex-row gap-2 items-center'>
-                <p className='text-3xl font-bold text-black'>{price}</p>
              <span className='bg-[#F7F7F5] text-sm font-bold px-3 py-1 rounded-full'>
                 {tag}
             </span>

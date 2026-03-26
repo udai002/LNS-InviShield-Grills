@@ -1,9 +1,10 @@
 import React from 'react'
 import CustomButton from '../ui/CustomButton';
 
+
 interface INavigationList {
     label:string ;
-    link:string
+    link:string 
 }
 
 const navigationList: INavigationList[] = [
@@ -29,6 +30,10 @@ const navigationList: INavigationList[] = [
     }
 ]
 
+const SideBar = ()=>{
+  return <div></div>
+}
+
 const Navbar = () => {
   return (
     <div className='p-7  shadow-gray-400 shadow-2xs flex flex-row justify-between items-center'>
@@ -42,7 +47,7 @@ const Navbar = () => {
         })}
       </ul>
       <div className='hidden md:block'>
-        <CustomButton title='GET' />
+        <CustomButton title='Get Brocher' />
       </div>
     </div>
   )

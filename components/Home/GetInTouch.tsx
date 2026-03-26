@@ -255,7 +255,7 @@ const ContactSection = () => {
 
                   <p className="text-center text-xs text-gray-400">
                     Or reach us instantly on{" "}
-                    <a href="https://wa.me/919840012345" target="_blank" rel="noopener noreferrer" className="text-emerald-600 font-semibold hover:underline">
+                    <a href="https://wa.me/918144725876" target="_blank" rel="noopener noreferrer" className="text-emerald-600 font-semibold hover:underline">
                       WhatsApp ↗
                     </a>
                   </p>
