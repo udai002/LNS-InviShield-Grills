@@ -55,8 +55,8 @@ export default function Home() {
         <FloatingButton title="Download brocher" position="bottom-left" theme="dark" onClick={
           () => {
             const link = document.createElement('a');
-            link.href = '/LNS_brocher.pdf';
-            link.download = 'LNS_brocher';
+            link.href = '/Brocher.pdf';
+            link.download = 'Brocher';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
