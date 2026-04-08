@@ -52,7 +52,7 @@ export default function Home() {
         }}
         position="bottom-right-12"
         />
-        <FloatingButton title="Download brocher" position="bottom-left" theme="dark" onClick={
+        {/* <FloatingButton title="Download brocher" position="bottom-left" theme="dark" onClick={
           () => {
             const link = document.createElement('a');
             link.href = '/Brocher.pdf';
@@ -61,7 +61,7 @@ export default function Home() {
             link.click();
             document.body.removeChild(link);
           }
-        }/>
+        }/> */}
     <div className="">
 
       {/* Navbar  */}

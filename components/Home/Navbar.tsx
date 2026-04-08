@@ -72,9 +72,11 @@ const navigationList: INavigationList[] = [
         exit="exit"
         className='fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-40 p-10 shadow-olive-600'
       >
-        <div className='flex flex-row justify-between items-center'>
-          <h1>LNS InviShield Grills</h1>
-          <button className='absolute top-10 right-5' onClick={()=>setIsOpen(false)}><IoClose size={23} /></button>
+        <div className='flex flex-row justify-between items-center px-10'>
+          <img src="/logogrills.jpeg" alt="logo grills" width={100} />
+        {/* <h1 className='font-extrabold text-black space-x-1 text-xl'>LNS InviShield</h1> */}
+        {/* <h1 className='font-bold text-gray-600 space-x-4 text-2xl'>Grills</h1> */}
+          <button className='absolute top-10 right-5' onClick={()=>setIsOpen(false)}><IoClose size={40} /></button>
         </div>
         <div className='flex flex-col gap-4 p-4'>
           {navigationList.map((item, i) => (
@@ -93,7 +95,14 @@ const navigationList: INavigationList[] = [
               {item.label}
             </motion.button>
           ))}
-          <CustomButton title='Get Brocher' />
+          {/* <CustomButton title='Get Brocher' onClick={() => {
+            const link = document.createElement('a');
+            link.href = '/Brocher.pdf';
+            link.download = 'Brocher';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }} /> */}
         </div>
       </motion.div>
     );
@@ -111,9 +120,10 @@ const Navbar = ({isOpen , setIsOpen}:INavbar) => {
     <>
     {isOpen && <SideBar setIsOpen={setIsOpen}/>}
     <div className='p-7  shadow-gray-400 shadow-2xs flex flex-row justify-between items-center'>
-      <div className="flex flex-row gap-2">
-        <h1 className='font-extrabold text-black space-x-1 text-3xl'>LNS InviShield</h1>
-        <h1 className='font-bold text-gray-600 space-x-4 text-3xl'>Grills</h1>
+      <div className="flex flex-row gap-2 items-center">
+        <img src="/logogrills.jpeg" alt="logo grills" width={100} />
+        <h1 className='font-extrabold text-black space-x-1 text-2xl '>LNS InviShield</h1>
+        <h1 className='font-bold text-gray-600 space-x-4 text-2xl hidden md:block'>Grills</h1>
       </div>
       <ul className='flex-row gap-7 text-xl text-gray-500 hidden md:flex'>
         {navigationList.map(item=>{
@@ -128,9 +138,7 @@ const Navbar = ({isOpen , setIsOpen}:INavbar) => {
       }}>
         <IoMdMenu />
       </button>
-      <div className='hidden md:block'>
-        <CustomButton title='Get Brocher' />
-      </div>
+     
     </div>
     </>
   )
