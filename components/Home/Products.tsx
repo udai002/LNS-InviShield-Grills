@@ -15,7 +15,7 @@ interface IProductList {
 const productList: IProductList[] = [
     {
         id: '1',
-        imageUrl: 'https://static.wixstatic.com/media/fe6a93_6c5ff418be2840b4b09651deb56756d8~mv2.jpg',
+        imageUrl: '/grills/main1.jpeg',
         title: 'Balcony Grill',
         label: 'Safety',
         description: 'Modern MS grill for balconies with anti-rust coating',
@@ -23,7 +23,7 @@ const productList: IProductList[] = [
     },
     {
         id: '2',
-        imageUrl: 'https://static.wixstatic.com/media/af53f8_836c493f935d49698eb72b3387e955bc~mv2.png/v1/fill/w_693,h_1086,al_tl,q_95,enc_avif,quality_auto/af53f8_836c493f935d49698eb72b3387e955bc~mv2.png',
+        imageUrl: '/grills/main2.jpeg',
         title: 'Window Grill',
         label: 'Security',
         description: 'Stainless steel grill designed for window safety',
@@ -31,7 +31,7 @@ const productList: IProductList[] = [
     },
     {
         id: '3',
-        imageUrl: 'https://static.wixstatic.com/media/af53f8_cd568495fcae45bc96980d7034fe79c9~mv2.png/v1/fill/w_1886,h_894,al_c,q_95,enc_avif,quality_auto/af53f8_cd568495fcae45bc96980d7034fe79c9~mv2.png',
+        imageUrl: '/grills/main3.jpeg',
         title: 'Door Grill',
         label: 'Protection',
         description: 'Heavy-duty iron grill for main doors',
@@ -39,7 +39,7 @@ const productList: IProductList[] = [
     },
     {
         id: '4',
-        imageUrl: 'https://static.wixstatic.com/media/af53f8_93c6edab84054025b5311b87b40bcc15~mv2.png/v1/fill/w_1886,h_894,al_c,q_95,enc_avif,quality_auto/af53f8_93c6edab84054025b5311b87b40bcc15~mv2.png',
+        imageUrl: '/grills/main4.jpeg',
         title: 'Staircase Grill',
         label: 'Safety',
         description: 'Elegant grill system for staircase railings',
@@ -155,23 +155,7 @@ const ProductItemCard = ({ imageUrl, title, tag, description, label, id }: IProd
                     transition={{ delay: index * 0.12 + 0.4 }}
                     viewport={{ once: true }}
                 >
-                    <motion.button
-                        whileHover={{ scale: 1.04, backgroundColor: '#111', color: '#fff' }}
-                        whileTap={{ scale: 0.97 }}
-                        transition={{ type: 'spring', stiffness: 350, damping: 18 }}
-                        className='flex-1 py-2 rounded-xl border border-gray-200 text-sm font-semibold text-gray-800 bg-[#F7F7F5] transition-colors'
-                    >
-                        Get Quote
-                    </motion.button>
-                    <motion.button
-                        whileHover={{ scale: 1.08 }}
-                        whileTap={{ scale: 0.95 }}
-                        className='w-9 h-9 rounded-xl bg-[#F7F7F5] flex items-center justify-center text-gray-500 hover:text-gray-900 border border-gray-200'
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" className='w-4 h-4' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-                            <path strokeLinecap='round' strokeLinejoin='round' d='M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z' />
-                        </svg>
-                    </motion.button>
+                  
                 </motion.div>
             </div>
         </motion.div>

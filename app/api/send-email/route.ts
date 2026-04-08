@@ -3,14 +3,14 @@ import nodemailer from 'nodemailer'
 
 // xhku ixwk cedy qlfz
 
-interface IMailDetails{
-    name:string ;
-    message:string ;
-    phone?:number ;
-    email?:string
+interface IMailDetails {
+  name: string;
+  message: string;
+  phone?: number;
+  email?: string
 }
 
-const customerTemplate = ({ name, message }:IMailDetails) => `
+const customerTemplate = ({ name, message }: IMailDetails) => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,15 +59,11 @@ const customerTemplate = ({ name, message }:IMailDetails) => `
 
               <table width="100%">
                 <tr>
-                  <td style="padding:5px;">
-                    <img src="https://images.unsplash.com/photo-1581091215367-59ab6b38b6c1" width="100%" style="border-radius:8px;" />
-                  </td>
+                 ss
                   <td style="padding:5px;">
                     <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" width="100%" style="border-radius:8px;" />
                   </td>
-                  <td style="padding:5px;">
-                    <img src="https://images.unsplash.com/photo-1598300056393-4aac492f4344" width="100%" style="border-radius:8px;" />
-                  </td>
+                 
                 </tr>
               </table>
             </td>
@@ -76,7 +72,7 @@ const customerTemplate = ({ name, message }:IMailDetails) => `
           <!-- Footer -->
           <tr>
             <td style="background:#111;color:#fff;text-align:center;padding:15px;font-size:14px;">
-              © 2026 Your Company • All rights reserved
+              © 2026 LNS invishield grills• All rights reserved
             </td>
           </tr>
 
@@ -89,7 +85,7 @@ const customerTemplate = ({ name, message }:IMailDetails) => `
 `;
 
 
-const companyTemplate = ({ name, email, phone, message }:IMailDetails) => `
+const companyTemplate = ({ name, email, phone, message }: IMailDetails) => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -165,42 +161,48 @@ const companyTemplate = ({ name, email, phone, message }:IMailDetails) => `
 `;
 
 export async function POST(req: NextRequest) {
-    try {
-        const body = await req.json()
-        const { name, phone, email, message } = body;
+  try {
+    const body = await req.json()
+    const { name, phone, email, message } = body;
 
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
-        });
+    const transporter = nodemailer.createTransport({
+      host: "smtpout.secureserver.net",
+      port: 587,
+      secure: false,
+      auth: {
+        user: "info@lnsinvishieldgrills.com",
+        pass: "Naveen@81447",
+      },
+    });
 
-        const mailOptions = {
-            from: "LNS InviShield Grills",
-            to: process.env.EMAIL_USER,
-            subject: `New Contact Form Submission from ${name}`,
-           html:companyTemplate({name , email ,phone , message})
-        };
+    const mailOptions = {
+      from: '"LNS Invishield" <info@lnsinvishieldgrills.com>',
+      to: '"LNS Invishield" <info@lnsinvishieldgrills.com>',
+      subject: `New Contact Form Submission from ${name}`,
+      html: companyTemplate({ name, email, phone, message })
+    };
 
-    
-        const CusmtomerMailOptions = {
-            from: "LNS InviShield Grills",
-            to:email , 
-            subject:"Thank you for contacting us" , 
-            html:customerTemplate({name , message})
-        }
 
-        // await transporter.sendMail(mailOptions);
-
-        await Promise.all([
-            transporter.sendMail(mailOptions) ,
-            transporter.sendMail(CusmtomerMailOptions)
-        ])
-
-        return NextResponse.json({ success: true });
-    } catch (error) {
-        console.log(error)
+    const CusmtomerMailOptions = {
+     from: '"LNS Invishield" <info@lnsinvishieldgrills.com>',
+      to: email,
+      subject: "Thank you for contacting us",
+      html: customerTemplate({ name, message })
     }
+
+    // await transporter.sendMail(mailOptions);
+
+    await Promise.all([
+      transporter.sendMail(mailOptions),
+      transporter.sendMail(CusmtomerMailOptions)
+    ])
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error(error)
+    return NextResponse.json(
+      { success: false, error: 'Internal Server Error'  , message:error},
+      { status: 500 }
+    )
+  }
 }

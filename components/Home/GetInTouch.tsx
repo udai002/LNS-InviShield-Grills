@@ -194,6 +194,7 @@ const ContactSection = () => {
   const [focused, setFocused] = useState<string | null>(null);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [isLoading , setIsLoading] = useState(false);
 
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
@@ -203,6 +204,7 @@ const ContactSection = () => {
   };
 
   async function sendContactDetails() {
+    setIsLoading(true);
     try {
       const response = await fetch("/api/send-email", {
         method: "POST",
@@ -217,6 +219,8 @@ const ContactSection = () => {
       }
     } catch {
       setError(true);
+    }finally{
+      setIsLoading(false);
     }
   }
 
@@ -569,20 +573,34 @@ const ContactSection = () => {
                       <motion.button
                         variants={submitButtonVariants}
                         initial="rest"
-                        whileHover="hover"
-                        whileTap="tap"
+                        whileHover={isLoading ? undefined : "hover"}
+                        whileTap={isLoading ? undefined : "tap"}
                         onClick={handleSubmit}
-                        className="mt-1 w-full py-3.5 rounded-xl bg-gray-900 text-white text-sm font-semibold tracking-wide shadow-sm hover:shadow-md flex items-center justify-center gap-2 group"
+                        disabled={isLoading}
+                        className={`mt-1 w-full py-3.5 rounded-xl bg-gray-900 text-white text-sm font-semibold tracking-wide shadow-sm hover:shadow-md flex items-center justify-center gap-2 group ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                       >
-                        Send Message
-                        <motion.svg
-                          width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-                          variants={{ rest: { x: 0 }, hover: { x: 3 } }}
-                          transition={{ type: "spring", stiffness: 320, damping: 18 }}
-                        >
-                          <line x1="22" y1="2" x2="11" y2="13" />
-                          <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                        </motion.svg>
+                        {isLoading ? (
+                          <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                          >
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" strokeDasharray="31.416" strokeDashoffset="10" />
+                            </svg>
+                          </motion.div>
+                        ) : (
+                          <>
+                            Send Message
+                            <motion.svg
+                              width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                              variants={{ rest: { x: 0 }, hover: { x: 3 } }}
+                              transition={{ type: "spring", stiffness: 320, damping: 18 }}
+                            >
+                              <line x1="22" y1="2" x2="11" y2="13" />
+                              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                            </motion.svg>
+                          </>
+                        )}
                       </motion.button>
                     </motion.div>
 

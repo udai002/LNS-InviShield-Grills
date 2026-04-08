@@ -181,8 +181,7 @@ const LandingPage = () => {
           {/* Subtext */}
           <motion.div variants={itemVariants}>
             <p className='text-gray-500 text-base sm:text-lg lg:text-xl'>
-              We make and install grills for balconies, windows, doors and staircases.
-              Good quality. Low price. Free home visit.
+              Insinvishield grills offer a modern, clean look with strong stainless steel cables for safety. Perfect as invisible grills for balcony in Bangalore and safety grills for balcony, they blend easily with any home interior.
             </p>
           </motion.div>
 
@@ -250,10 +249,11 @@ const LandingPage = () => {
         >
           <div className='w-full'>
             <SlideAnimation images={[
-              '/balcony1.webp',
-              '/balcony2.webp',
-              '/balcony3.webp',
-              '/balcony4.webp',
+              '/grills/main1.jpeg',
+              '/grills/main2.jpeg',
+              '/grills/main3.jpeg',
+              '/grills/main4.jpeg',
+              '/grills/main5.jpeg',
             ]} />
           </div>
         </motion.div>
