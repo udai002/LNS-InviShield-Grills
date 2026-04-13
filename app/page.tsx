@@ -11,10 +11,11 @@ import FloatingButton from "@/components/ui/FloatingButton";
 import Image from "next/image";
 import { useState } from "react";
 import { IoCall } from "react-icons/io5";
-
+import { Provider } from 'react-redux';
 import { motion } from "framer-motion"
 import { FaWhatsapp } from "react-icons/fa"
 import { IoCallOutline } from "react-icons/io5"
+import store from "@/store";
 
 
 const BrocherIcon = ()=>{

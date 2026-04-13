@@ -43,7 +43,7 @@ const PrimaryButton = ({
         borderColor:backgroundColor, 
         borderWidth:2
       }}
-      className="px-5 py-5 font-bold rounded-xl justify-center"
+      className="px-5 py-5 font-bold rounded-xl justify-center mt-5 w-full"
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

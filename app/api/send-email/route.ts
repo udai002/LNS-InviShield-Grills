@@ -1,3 +1,4 @@
+import Submission from '@/models/Submission';
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer'
 
@@ -194,7 +195,8 @@ export async function POST(req: NextRequest) {
 
     await Promise.all([
       transporter.sendMail(mailOptions),
-      transporter.sendMail(CusmtomerMailOptions)
+      transporter.sendMail(CusmtomerMailOptions) , 
+      Submission.create({name , email , phone , message , email_sent:true})
     ])
 
     return NextResponse.json({ success: true });
