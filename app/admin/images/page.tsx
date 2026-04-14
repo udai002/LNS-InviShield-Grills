@@ -66,7 +66,7 @@ export default function Gallery(){
                             />
                             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
                                 {/* <button className="bg-white text-black px-3 py-1 rounded text-sm hover:bg-gray-200">Edit</button> */}
-                                <button className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Delete</button>
+                                {/* <button className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">Delete</button> */}
                             </div>
                         </div>
                     ))}
