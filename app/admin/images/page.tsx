@@ -58,9 +58,9 @@ export default function Gallery(){
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {data?.map((item: any) => (
-                        <div key={item.id} className="group relative overflow-hidden rounded-lg aspect-square cursor-pointer">
+                        <div key={item._id} className="group relative overflow-hidden rounded-lg aspect-square cursor-pointer">
                             <img
-                            key={item.id}
+                            key={item._id}
                                 src={item.imageUrl}
                                 alt="Gallery"
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

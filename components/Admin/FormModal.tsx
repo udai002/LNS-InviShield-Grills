@@ -1,142 +1,213 @@
-import { useEffect, useState } from 'react'; // adjust path as needed
+
+import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import CustomButton from '../ui/CustomButton';
-import { useCreateLocationMutation, useLazyGetLocationByIdQuery, useUpdateLocationMutation } from '@/redux/locationSlice';
+import {
+  useCreateLocationMutation,
+  useLazyGetLocationByIdQuery,
+  useUpdateLocationMutation
+} from '@/redux/locationSlice';
 
-interface IFormModel{
-    isOpen:boolean ;
-    close:()=>void;
-    selectedLocation?:any
+interface IFormModel {
+  isOpen: boolean;
+  close: () => void;
+  selectedLocation?: any;
 }
 
-export default function FormModal({isOpen , close , selectedLocation}:IFormModel) {
-    const [createLocation, { isLoading }] = useCreateLocationMutation();
+export default function FormModal({ isOpen, close, selectedLocation }: IFormModel) {
+  const [createLocation, { isLoading }] = useCreateLocationMutation();
 
-    const [getLocationById ,{isLoading:locationLoading , isError:LocationError}] = useLazyGetLocationByIdQuery()
-    const [updateLocation , {isLoading:updating , isError:updateError}] = useUpdateLocationMutation()
-    
-    const [state, setState] = useState('');
-    const [city, setCity] = useState('');
-    const [area, setArea] = useState('');
-    const [description, setDescription] = useState('');
-    const [locationId , setLocationId] = useState("")
+  const [
+    getLocationById,
+    { isLoading: locationLoading }
+  ] = useLazyGetLocationByIdQuery();
 
-    async function getLocationForEdit(){
-        console.log("this is rnning")
-        if(!selectedLocation)return ;
-        try{
-            const response = await getLocationById(selectedLocation.id).unwrap()
-            console.log("this is location details for particular location" , response)
-            setState(response.state)
-            setCity(response.city)
-            setArea(response.area)
-            setDescription(response.description)
-            setLocationId(response._id)
-        }catch(error){
-            console.log(error)
-            toast.error("Unable to load location details. Please try again.");
-        }
+  const [
+    updateLocation,
+    { isLoading: updating }
+  ] = useUpdateLocationMutation();
+
+  const [state, setState] = useState('');
+  const [city, setCity] = useState('');
+  const [area, setArea] = useState('');
+  const [description, setDescription] = useState('');
+  const [locationId, setLocationId] = useState('');
+
+  // ✅ Fetch for edit with stale protection
+  async function getLocationForEdit() {
+    if (!selectedLocation) return;
+
+    const currentId = selectedLocation.id;
+
+    try {
+      const response = await getLocationById(currentId).unwrap();
+
+      // 🛑 Prevent stale overwrite
+      if (!selectedLocation || selectedLocation.id !== currentId) return;
+
+      setState(response.state);
+      setCity(response.city);
+      setArea(response.area);
+      setDescription(response.description);
+      setLocationId(response._id);
+    } catch (error) {
+      toast.error('Unable to load location details.');
     }
+  }
 
-    useEffect(()=>{
-       getLocationForEdit()
-    } , [selectedLocation])
+  // ✅ Handle modal open + mode switch
+  useEffect(() => {
+    if (!isOpen) return;
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log("this is selected location", selectedLocation)
-        const payload = { state, city, area, description }
-        try {
-            if(!selectedLocation){
-                await createLocation(payload).unwrap();
-                toast.success('Location added successfully.');
-            }else{
-                await updateLocation({data:payload , id:locationId}).unwrap();
-                toast.success('Location updated successfully.');
-            }
-            
-            // Reset form
-            setState('');
-            setCity('');
-            setArea('');
-            setDescription('');
-            close();
-        } catch (error) {
-            console.error('Failed to save location:', error);
-            toast.error('Failed to save location. Please try again.');
-        }
-    };
+    if (selectedLocation) {
+      getLocationForEdit();
+    } else {
+      // Reset form for Add mode
+      setState('');
+      setCity('');
+      setArea('');
+      setDescription('');
+      setLocationId('');
+    }
+  }, [selectedLocation, isOpen]);
 
-    return (
-        <>
-            {isOpen && (
-                <div className="fixed inset-0 bg-black/45 bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 w-full max-w-md">
-                        <h2 className="text-xl font-bold mb-4">Add Information</h2>
-                        
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium mb-1">State</label>
-                                <input
-                                    type="text"
-                                    value={state}
-                                    onChange={(e) => setState(e.target.value)}
-                                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium mb-1">City</label>
-                                <input
-                                    type="text"
-                                    value={city}
-                                    onChange={(e) => setCity(e.target.value)}
-                                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium mb-1">Area</label>
-                                <input
-                                    type="text"
-                                    value={area}
-                                    onChange={(e) => setArea(e.target.value)}
-                                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium mb-1">Description</label>
-                                <textarea
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    rows={4}
-                                    required
-                                />
-                            </div>
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-                            <div className="flex gap-3 pt-4">
-                                <button
-                                    type="button"
-                                    onClick={close}
-                                    disabled={isLoading}
-                                    className="flex-1 bg-gray-300 text-gray-800 py-2 rounded-lg hover:bg-gray-400 disabled:opacity-50"
-                                >
-                                    Cancel
-                                </button>
-                                <CustomButton 
-                                    title={(isLoading || updating) ? "Loading..." : selectedLocation?'update':'Add Location'} 
-                                    onClick={() => {}}
-                                    disabled={isLoading}
-                                    loading={isLoading}
-                                    type="submit"
-                                />
-                            </div>
-                        </form>
-                    </div>
+    const payload = { state, city, area, description };
+
+    try {
+      if (!selectedLocation) {
+        await createLocation(payload).unwrap();
+        toast.success('Location added successfully.');
+      } else {
+        await updateLocation({ data: payload, id: locationId }).unwrap();
+        toast.success('Location updated successfully.');
+      }
+
+      // Reset form
+      setState('');
+      setCity('');
+      setArea('');
+      setDescription('');
+      setLocationId('');
+
+      close();
+    } catch (error) {
+      toast.error('Failed to save location. Please try again.');
+    }
+  };
+
+  return (
+    <>
+      {isOpen && (
+        <div className="fixed inset-0 bg-black/45 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md relative">
+
+            {/* 🔥 Loading Overlay */}
+            {locationLoading && selectedLocation && (
+              <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10 rounded-lg">
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                  <p className="text-sm text-gray-600">
+                    Loading location details...
+                  </p>
                 </div>
+              </div>
             )}
-        </>
-    );
+
+            <h2 className="text-xl font-bold mb-4">
+              {selectedLocation ? 'Edit Location' : 'Add Location'}
+            </h2>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+
+              <div>
+                <label className="block text-sm font-medium mb-1">State</label>
+                <input
+                  type="text"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  disabled={locationLoading}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">City</label>
+                <input
+                  type="text"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  disabled={locationLoading}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Area</label>
+                <input
+                  type="text"
+                  value={area}
+                  onChange={(e) => setArea(e.target.value)}
+                  disabled={locationLoading}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Description</label>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  disabled={locationLoading}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                  rows={4}
+                  required
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    close();
+                    setState('');
+                    setCity('');
+                    setArea('');
+                    setDescription('');
+                    setLocationId('');
+                  }}
+                  disabled={isLoading || updating}
+                  className="flex-1 bg-gray-300 text-gray-800 py-2 rounded-lg hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+
+                <CustomButton
+                  title={
+                    locationLoading
+                      ? 'Fetching...'
+                      : (isLoading || updating)
+                      ? 'Saving...'
+                      : selectedLocation
+                      ? 'Update'
+                      : 'Add Location'
+                  }
+                  disabled={isLoading || updating || locationLoading}
+                  loading={isLoading || updating || locationLoading}
+                  type="submit"
+                />
+              </div>
+
+            </form>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
+
