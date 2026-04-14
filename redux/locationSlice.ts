@@ -4,7 +4,7 @@ export const locationApi = createApi({
   reducerPath: 'locationApi',
 
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3000/api/', // 🔥 your Next.js API
+   baseUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
   }),
 
   tagTypes: ['Location'], // ✅ for cache invalidation

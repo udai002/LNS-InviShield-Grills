@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setError(null)
 
     try {
-      const res = await fetch(`${BASE_URL}/api/auth`, {
+      const res = await fetch(`/api/auth`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
