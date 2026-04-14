@@ -1,25 +1,59 @@
-import { useState } from 'react'; // adjust path as needed
+import { useEffect, useState } from 'react'; // adjust path as needed
+import { toast } from 'react-hot-toast';
 import CustomButton from '../ui/CustomButton';
-import { useCreateLocationMutation } from '@/redux/locationSlice';
+import { useCreateLocationMutation, useLazyGetLocationByIdQuery, useUpdateLocationMutation } from '@/redux/locationSlice';
 
 interface IFormModel{
     isOpen:boolean ;
     close:()=>void;
+    selectedLocation?:any
 }
 
-export default function FormModal({isOpen , close}:IFormModel) {
+export default function FormModal({isOpen , close , selectedLocation}:IFormModel) {
     const [createLocation, { isLoading }] = useCreateLocationMutation();
+
+    const [getLocationById ,{isLoading:locationLoading , isError:LocationError}] = useLazyGetLocationByIdQuery()
+    const [updateLocation , {isLoading:updating , isError:updateError}] = useUpdateLocationMutation()
     
     const [state, setState] = useState('');
     const [city, setCity] = useState('');
     const [area, setArea] = useState('');
     const [description, setDescription] = useState('');
+    const [locationId , setLocationId] = useState("")
+
+    async function getLocationForEdit(){
+        console.log("this is rnning")
+        if(!selectedLocation)return ;
+        try{
+            const response = await getLocationById(selectedLocation.id).unwrap()
+            console.log("this is location details for particular location" , response)
+            setState(response.state)
+            setCity(response.city)
+            setArea(response.area)
+            setDescription(response.description)
+            setLocationId(response._id)
+        }catch(error){
+            console.log(error)
+            toast.error("Unable to load location details. Please try again.");
+        }
+    }
+
+    useEffect(()=>{
+       getLocationForEdit()
+    } , [selectedLocation])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+        console.log("this is selected location", selectedLocation)
+        const payload = { state, city, area, description }
         try {
-            await createLocation({ state, city, area, description }).unwrap();
+            if(!selectedLocation){
+                await createLocation(payload).unwrap();
+                toast.success('Location added successfully.');
+            }else{
+                await updateLocation({data:payload , id:locationId}).unwrap();
+                toast.success('Location updated successfully.');
+            }
             
             // Reset form
             setState('');
@@ -28,7 +62,8 @@ export default function FormModal({isOpen , close}:IFormModel) {
             setDescription('');
             close();
         } catch (error) {
-            console.error('Failed to create location:', error);
+            console.error('Failed to save location:', error);
+            toast.error('Failed to save location. Please try again.');
         }
     };
 
@@ -91,7 +126,7 @@ export default function FormModal({isOpen , close}:IFormModel) {
                                     Cancel
                                 </button>
                                 <CustomButton 
-                                    title={isLoading ? "Loading..." : "Add new Location"} 
+                                    title={(isLoading || updating) ? "Loading..." : selectedLocation?'update':'Add Location'} 
                                     onClick={() => {}}
                                     disabled={isLoading}
                                     loading={isLoading}

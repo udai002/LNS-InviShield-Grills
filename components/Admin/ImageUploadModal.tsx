@@ -4,6 +4,7 @@ import { useCreateGalleryMutation } from "@/redux/GallerySlice";
 import { useLazyGetLocationsQuery } from "@/redux/locationSlice";
 import { form } from "framer-motion/client";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { toast } from "react-hot-toast";
 
 const CATEGORIES = ["Window", "Balcony", "Other"] as const;
 type Category = (typeof CATEGORIES)[number];
@@ -94,14 +95,14 @@ export default function ImageUploadModal({
    formData.append("category" , category)
    formData.append("locationId" , location)
 
-   try{
-    const response = await creategallery(formData).unwrap()
-    console.log(response)
-   }catch(error){
-    console.log("something went wrong")
-   }
-    
-    handleClose();
+    try {
+      await creategallery(formData).unwrap();
+      toast.success("Image uploaded successfully.");
+      handleClose();
+    } catch (error) {
+      console.error("Something went wrong uploading the image:", error);
+      toast.error("Failed to upload image. Please try again.");
+    }
   };
 
   const handleClose = (): void => {

@@ -36,7 +36,7 @@ export default function Gallery(){
                     className="px-4 py-2 border rounded-lg"
                 >
                     <option value="" >All</option>
-                    {locations && locations.map((item:any)=>  <option value={item._id} >{`${item.state}-${item.city}`}</option>)}
+                    {locations && locations.map((item:any)=>  <option key={item._id} value={item._id} >{`${item.state}-${item.city}`}</option>)}
                   
                 </select>
                 {/* <select
@@ -60,6 +60,7 @@ export default function Gallery(){
                     {data?.map((item: any) => (
                         <div key={item.id} className="group relative overflow-hidden rounded-lg aspect-square cursor-pointer">
                             <img
+                            key={item.id}
                                 src={item.imageUrl}
                                 alt="Gallery"
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

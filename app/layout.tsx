@@ -1,10 +1,7 @@
-
-
+import Script from "next/script";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Provider } from "react-redux";
-import store from "@/store";
 import Providers from "./Provider";
 import { AuthProvider } from "@/context/AuthContext";
 
@@ -20,22 +17,37 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "LNS InviShield Grills",
-  description: "LNS InviShield Grills, we combine expertise, innovation, and a deep understanding of safety to offer the most reliable invisible grille systems on the market. With years of experience in the industry, we’ve helped hundreds of homeowners transform their spaces into safe yet open environments​",
+  description: "LNS InviShield Grills...",
+  keywords: "Invisible grills in bangalore...",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-     <html lang="en">
-      <body>
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+
+        {/* Google Ads */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=AW-18089747395"
+          strategy="afterInteractive"
+        />
+        <Script id="google-ads" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-18089747395');
+          `}
+        </Script>
+
         <AuthProvider>
-        <Providers>
-          {children}
-        </Providers>
+          <Providers>
+            {children}
+          </Providers>
         </AuthProvider>
+
       </body>
     </html>
   );

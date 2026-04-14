@@ -2,8 +2,13 @@
 
 import store from '@/store';
 import { Provider } from 'react-redux';
-
+import { Toaster } from 'react-hot-toast';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-  return <Provider store={store}>{children}</Provider>;
+  return (
+    <Provider store={store}>
+      {children}
+      <Toaster position="top-center" />
+    </Provider>
+  );
 }

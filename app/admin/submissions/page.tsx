@@ -1,55 +1,83 @@
 "use client"
 
+import { useState, useMemo } from "react";
+import DataTable from "@/components/Admin/DataTable";
 import AdminLayout from "@/components/navigations/AdminLayout";
 import { useGetSubmissionsQuery } from "@/redux/SubmissionSlice";
 
-export default function Submissions(){
 
-    const {data , isLoading} = useGetSubmissionsQuery("submissions")
+type Submission = {
+    _id: string;
+    name: string;
+    email: string;
+    phone: string;
+    message: string;
+    email_sent: boolean;
+    createdAt: string;
+};
 
-    console.log("this is data", data)
+const columns = [
+    { key: "name" as keyof Submission, label: "Name" },
+    { key: "email" as keyof Submission, label: "Email" },
+    { key: "phone" as keyof Submission, label: "Phone" },
+    { key: "message" as keyof Submission, label: "Message" },
+    {
+        key: "email_sent" as keyof Submission,
+        label: "Status",
+        render: (value: Submission[keyof Submission]) => (
+            <span className={value ? "text-green-600" : "text-red-600"}>
+                {value ? "Sent" : "Pending"}
+            </span>
+        ),
+    },
+    {
+        key: "createdAt" as keyof Submission,
+        label: "Date",
+        render: (value: Submission[keyof Submission]) =>
+            new Date(value as string).toLocaleDateString(),
+    },
+];
 
-    return <AdminLayout>
-        <div className="p-10">
-            <div>
-                <input type="search" className="p-4 rounded-xl border-2 border-gray-400" placeholder="Search submission..." />
-            </div>
-            {isLoading ? (
-                <div className="flex justify-center items-center h-64">
-                    <p className="text-lg text-gray-500">Loading submissions...</p>
+export default function Submissions() {
+    const { data, isLoading } = useGetSubmissionsQuery("submissions");
+    const [search, setSearch] = useState("");
+
+    const filteredData = useMemo(() => {
+        if (!data) return [];
+        if (!search.trim()) return data;
+
+        const query = search.toLowerCase().trim();
+        return data.filter((submission: Submission) =>
+            submission.name.toLowerCase().includes(query)
+        );
+    }, [data, search]);
+
+    return (
+        <AdminLayout>
+            <div className="p-10">
+                <div>
+                    <input
+                        type="search"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="p-4 rounded-xl border-2 border-gray-400"
+                        placeholder="Search submission..."
+                    />
                 </div>
-            ) : (
                 <div className="mt-6">
-                    <table className="w-full border-collapse border border-gray-300">
-                        <thead className="bg-gray-100">
-                            <tr>
-                                <th className="border border-gray-300 p-3 text-left">Name</th>
-                                <th className="border border-gray-300 p-3 text-left">Email</th>
-                                <th className="border border-gray-300 p-3 text-left">Phone</th>
-                                <th className="border border-gray-300 p-3 text-left">Message</th>
-                                <th className="border border-gray-300 p-3 text-left">Status</th>
-                                <th className="border border-gray-300 p-3 text-left">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {data?.map((submission:any) => (
-                                <tr key={submission._id} className="hover:bg-gray-50">
-                                    <td className="border border-gray-300 p-3">{submission.name}</td>
-                                    <td className="border border-gray-300 p-3">{submission.email}</td>
-                                    <td className="border border-gray-300 p-3">{submission.phone}</td>
-                                    <td className="border border-gray-300 p-3">{submission.message}</td>
-                                    <td className="border border-gray-300 p-3">
-                                        <span className={submission.email_sent ? "text-green-600" : "text-red-600"}>
-                                            {submission.email_sent ? "Sent" : "Pending"}
-                                        </span>
-                                    </td>
-                                    <td className="border border-gray-300 p-3">{new Date(submission.createdAt).toLocaleDateString()}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <DataTable<Submission>
+                        columns={columns}
+                        data={filteredData}
+                        keyExtractor={(row) => row._id}
+                        loading={isLoading}
+                        emptyMessage={
+                            search ? `No submissions found for "${search}"` : "No submissions found."
+                        }
+                        pageSize={10}
+                        pageSizeOptions={[5, 10, 20, 50]}
+                    />
                 </div>
-            )}
-        </div>
-    </AdminLayout>
+            </div>
+        </AdminLayout>
+    );
 }
