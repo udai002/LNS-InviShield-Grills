@@ -54,4 +54,4 @@ export const locationApi = createApi({
   }),
 });
 
-export const {useLazyGetLocationsQuery , useCreateLocationMutation , useGetLocationByIdQuery } = locationApi
+export const {useLazyGetLocationsQuery , useCreateLocationMutation , useGetLocationByIdQuery , useDeleteLocationMutation , useLazyGetLocationByIdQuery , useUpdateLocationMutation } = locationApi
