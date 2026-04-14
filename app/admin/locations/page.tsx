@@ -41,6 +41,8 @@ export default function Location() {
 
     function onClose(){
         setIsOpen(false)
+        setEditSelected(null)
+        
     }
 
     const [getLocations, { data, isLoading }] = useLazyGetLocationsQuery();
