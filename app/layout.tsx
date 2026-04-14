@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "LNS InviShield Grills",
-  description: "LNS InviShield Grills...",
-  keywords: "Invisible grills in bangalore...",
-};
+  description: "LNS InviShield Grills, we combine expertise, innovation, and a deep understanding of safety to offer the most reliable invisible grille systems on the market. With years of experience in the industry, we’ve helped hundreds of homeowners transform their spaces into safe yet open environments​",
+  keywords:"Invisible grills in bangalore, invisible grills for balcony in Bangalore, safety grills near me, balcony safety nets in bangalore, invisible grills for windows, safety nets for balcony, safety nets for windows, staircase grills in Bangalore,"
+}
 
 export default function RootLayout({
   children,
