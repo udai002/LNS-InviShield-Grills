@@ -141,7 +141,7 @@ const LandingPage = () => {
   const isInView = useInView(ref, { once: true, margin: '-80px' })
 
   const openWhatsApp = () => {
-    const phone = '918480869589'; // country code +91 + number
+    const phone = '918144725876'; // country code +91 + number
     const url = `https://wa.me/${phone}`;
     if (typeof window !== 'undefined') {
       window.open(url, '_blank');
@@ -213,7 +213,7 @@ const LandingPage = () => {
               <PrimaryButton
                 backgroundColor='black'
                 textColor='white'
-                title='call:+917608043042'
+                title='call:+918144725876'
                 textSize={16}
                 hoverBackgroundColor='white'
                 hoverTextColor='black'

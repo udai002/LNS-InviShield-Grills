@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { motion, AnimatePresence, useInView, Variants } from 'framer-motion'
 import { Oswald, Inter, IBM_Plex_Mono } from 'next/font/google'
 import { X, ChevronLeft, ChevronRight, Expand } from 'lucide-react'
@@ -12,70 +12,14 @@ const plexMono = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '500'], var
 interface IProductList {
     imageUrl: string
     title: string
-    id: string
+    _id: string
     label: string
     description: string
     tag: string
     spec: string
 }
 
-const productList: IProductList[] = [
-    {
-        id: '1',
-        imageUrl: '/grills1.jpeg',
-        title: 'Balcony safety nets',
-        label: 'Safety',
-        description: 'Modern MS grill for balconies with anti-rust coating',
-        tag: 'Popular',
-        spec: 'MS · Powder Coated',
-    },
-    {
-        id: '2',
-        imageUrl: '/grills2.png',
-        title: 'Window safety nets',
-        label: 'Security',
-        description: 'Stainless steel grill designed for window safety',
-        tag: 'Best Seller',
-        spec: 'SS 304 · Brushed',
-    },
-    {
-        id: '3',
-        imageUrl: '/grills3.jpeg',
-        title: 'Window mosquito net',
-        label: 'Protection',
-        description: 'Heavy-duty iron grill for main doors',
-        tag: 'Premium',
-        spec: 'Iron · Reinforced',
-    },
-    {
-        id: '4',
-        imageUrl: '/grills4.jpeg',
-        title: 'Window mosquito net',
-        label: 'Safety',
-        description: 'Elegant grill system for staircase railings',
-        tag: 'New',
-        spec: 'MS · Matte Black',
-    },
-    {
-        id: '5',
-        imageUrl: '/cricketgrills.jpeg',
-        title: 'Cricket sports nets',
-        label: 'Security',
-        description: 'Stainless steel grill designed for cricket practice areas',
-        tag: 'Popular',
-        spec: 'SS 316 · Invisible',
-    },
-    {
-        id: '6',
-        imageUrl: '/hoursegriils.jpeg',
-        title: 'Cloth hangers',
-        label: 'Protection',
-        description: 'Custom-designed grill for residential homes',
-        tag: 'Best Seller',
-        spec: 'MS · Custom Design',
 
-    }
-]
 
 const tagColors: Record<string, string> = {
     'Popular': 'bg-[#E3A008]/15 text-[#B87E00] ring-1 ring-[#E3A008]/30',
@@ -237,13 +181,16 @@ const Lightbox = ({
     index,
     onClose,
     onNavigate,
+    products,
 }: {
     index: number
     onClose: () => void
-    onNavigate: (i: number) => void
+    onNavigate: (i: number) => void , 
+    products:any
+    
 }) => {
-    const item = productList[index]
-    const total = productList.length
+    const item = products[index]
+    const total = products.length
 
     const goNext = useCallback(() => onNavigate((index + 1) % total), [index, total, onNavigate])
     const goPrev = useCallback(() => onNavigate((index - 1 + total) % total), [index, total, onNavigate])
@@ -342,7 +289,7 @@ const Lightbox = ({
 
             {/* Thumbnail strip */}
             <div className="flex items-center justify-center gap-2 sm:gap-3 px-4 pb-5 sm:pb-8 overflow-x-auto shrink-0">
-                {productList.map((p, i) => (
+                {products.map((p:any, i:number) => (
                     <button
                         key={p.id}
                         onClick={() => onNavigate(i)}
@@ -373,6 +320,42 @@ const Products = () => {
     const ref = React.useRef(null)
     const isInView = useInView(ref, { once: true, margin: '-80px' })
     const [lightboxIndex, setLightboxIndex] = React.useState<number | null>(null)
+    const [loading ,setLoading] = useState(true)
+    const [error , setError] = useState("")
+    const [products , setProducts] = useState([])
+
+      useEffect(() => {
+        async function loadProducts() {
+            setLoading(true);
+            setError("");
+
+            try {
+                const response = await fetch("/api/Products");
+                if (!response.ok) {
+                    throw new Error(`Failed to load products (${response.status})`);
+                }
+
+                const data = await response.json();
+                if (!Array.isArray(data?.data)) {
+                    throw new Error("Invalid product data format");
+                }
+
+                setProducts(data.data);
+
+            } catch (fetchError) {
+                const message = fetchError instanceof Error
+                    ? fetchError.message
+                    : "An unknown error occurred.";
+
+                setError(message);
+
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        loadProducts();
+    }, []);
 
     return (
         <section id="products" className={`${oswald.variable} ${inter.variable} ${plexMono.variable}`}>
@@ -424,8 +407,8 @@ const Products = () => {
 
                 {/* Product grid — responsive: 1 col mobile, 2 col tablet, 3 col desktop */}
                 <div className="relative grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 mt-9 sm:mt-12">
-                    {productList.map((item, i) => (
-                        <ProductItemCard key={item.id} item={item} index={i} onOpen={setLightboxIndex} />
+                    {products && products.map((item:any, i) => (
+                        <ProductItemCard key={item._id} item={item} index={i} onOpen={setLightboxIndex} />
                     ))}
                 </div>
             </div>
@@ -434,6 +417,7 @@ const Products = () => {
             <AnimatePresence>
                 {lightboxIndex !== null && (
                     <Lightbox
+                    products={products}
                         index={lightboxIndex}
                         onClose={() => setLightboxIndex(null)}
                         onNavigate={setLightboxIndex}
