@@ -70,6 +70,7 @@ export async function POST(req:Request){
 //get product 
 export async function GET(req:Request){
     try{
+        await connectDB()
         const products= await Product.find({})
         return NextResponse.json({
             data:products
@@ -87,6 +88,7 @@ export async function GET(req:Request){
 //delete product 
 export async function DELETE(req:Request){
     try{
+        await connectDB()
         // Postman test URL example:
         // DELETE http://localhost:3000/api/Products?productId=PRODUCT_ID
 
