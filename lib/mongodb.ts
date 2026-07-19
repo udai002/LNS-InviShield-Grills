@@ -1,23 +1,41 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI!;
 
 if (!MONGODB_URI) {
-  console.log("this is mongodb uri" , MONGODB_URI)
-  
-  throw new Error('Please define MONGODB_URI');
+  throw new Error("Please define MONGODB_URI");
 }
 
-let cached = (global as any).mongoose || { conn: null, promise: null };
+// Disable buffering globally
+mongoose.set("bufferCommands", false);
+
+let cached = (global as any).mongoose;
+
+if (!cached) {
+  cached = (global as any).mongoose = {
+    conn: null,
+    promise: null,
+  };
+}
 
 export async function connectDB() {
   if (cached.conn) return cached.conn;
+
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, {
-      dbName: 'mydb',
+      dbName: "mydb",
+      bufferCommands: false,
     });
   }
 
-  cached.conn = await cached.promise;
+  try {
+    cached.conn = await cached.promise;
+    console.log("✅ MongoDB Connected");
+  } catch (error) {
+    cached.promise = null;
+    console.error("❌ MongoDB Connection Error:", error);
+    throw error;
+  }
+
   return cached.conn;
 }
