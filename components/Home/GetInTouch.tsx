@@ -25,7 +25,7 @@ const contactItems = [
       </svg>
     ),
     label: "WhatsApp",
-    value: "+91 8480869589",
+    value: "+91 8144725876",
     href: "https://wa.me/918144725876",
     bg: "bg-emerald-50",
     iconColor: "text-emerald-600",
@@ -39,8 +39,8 @@ const contactItems = [
       </svg>
     ),
     label: "Email",
-    value: "hello@steelcraft.in",
-    href: "mailto:hello@steelcraft.in",
+    value: "elishasafetynetsandinvisiblegrills@gmail.com",
+    href: "mailto:elishasafetynetsandinvisiblegrills@gmail.com",
     bg: "bg-sky-50",
     iconColor: "text-sky-600",
     hoverBorder: "hover:border-sky-300",
