@@ -2,6 +2,7 @@
 
 import { useAuth } from '@/context/AuthContext';
 import { usePathname, useRouter } from 'next/navigation';
+import { CgProductHunt } from 'react-icons/cg';
 import {
   IoMdHome,
   IoMdPin,
@@ -24,6 +25,7 @@ const navigationList: NavigationItem[] = [
   { title: "Locations", link: "/admin/locations", id: 2, icon: <IoMdPin /> },
   { title: "Submissions", link: "/admin/submissions", id: 3, icon: <IoMdMail /> },
   { title: "Images", link: "/admin/images", id: 4, icon: <IoMdImages /> },
+  { title: "Products", link: "/admin/Products", id: 5, icon: <CgProductHunt /> },
   // { title: "Visits", link: "/admin/visits", id: 5, icon: <IoMdStats /> },
   // { title: "Testimonials", link: "/admin/testimonials", id: 6, icon: <IoMdChatbubbles /> },
   // { title: "Cards", link: "/admin/cards", id: 7, icon: <IoMdCard /> },
