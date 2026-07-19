@@ -249,8 +249,8 @@ const LandingPage = () => {
         >
           <div className='w-full'>
             <SlideAnimation images={[
-              '/cricketgrills.jpeg',
-              '/balconygirlls.jpeg',
+              '/cricketgrills1.jpeg',
+              '/balconygrills.jpeg',
               '/grills3.jpeg',
               '/grills4.jpeg',
               '/grills2.png',
